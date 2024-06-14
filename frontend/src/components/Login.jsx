@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
-  const [name, setName] = useState("");
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const auth = localStorage.getItem("user");
@@ -16,11 +15,11 @@ const SignUp = () => {
   });
 
   const handleSubmit = async (e) => {
+    console.log(email, password);
     e.preventDefault();
-    const res = await fetch("http://localhost:4000/signup", {
+    const res = await fetch("http://localhost:4000/login", {
       method: "POST",
       body: JSON.stringify({
-        name,
         email,
         password,
       }),
@@ -29,23 +28,16 @@ const SignUp = () => {
       },
     });
     const data = await res?.json();
-    if (data) {
+    if (data?.email) {
       navigate("/");
       localStorage.setItem("user", JSON.stringify(data));
     }
   };
 
   return (
-    <div className="signup">
-      <h1>Sign up Page</h1>
+    <div className="login">
+      <h1>Login up Page</h1>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
         <input
           type="text"
           placeholder="Enter Email"
@@ -60,10 +52,10 @@ const SignUp = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
 };
 
-export default SignUp;
+export default Login;
